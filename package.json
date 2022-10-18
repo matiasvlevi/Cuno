@@ -4,8 +4,8 @@
   "description": "",
   "main": "test.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "node-gyp rebuild"
+    "test": "node ./test.js",
+    "build": "node-gyp build"
   },
   "author": "",
   "license": "ISC",
