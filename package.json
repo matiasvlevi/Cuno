@@ -2,10 +2,13 @@
   "name": "cuno",
   "version": "1.0.0",
   "description": "",
-  "main": "test.js",
+  "main": "build/Release/cuno",
   "scripts": {
     "test": "node ./test.js",
     "build": "node-gyp build"
+  },
+  "dependencies": {
+    "node-gyp"              : "^8.4.1"
   },
   "author": "",
   "license": "ISC",

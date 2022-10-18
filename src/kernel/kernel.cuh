@@ -2,6 +2,7 @@
 #define KERNEL_H
 #include <cuda.h>
 #include <iostream> // TODO: REMOVE 
+
 namespace Kernel {
 
     // __global__ 
