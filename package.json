@@ -4,13 +4,15 @@
   "description": "",
   "main": "build/Release/cuno",
   "scripts": {
-    "test": "node ./test.js",
-    "build": "node-gyp build"
+
+    "test":"/usr/bin/node ./Dann/test/manual-tests/node/empty-example/test.js",
+    "benchmark":"/usr/bin/node ./tests/benchmark.js",
+    "build": "node-gyp rebuild"
   },
   "dependencies": {
     "node-gyp"              : "^8.4.1"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "gypfile": true
 }

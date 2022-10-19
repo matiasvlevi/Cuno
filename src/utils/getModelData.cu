@@ -10,10 +10,7 @@ ModelData *Utils::getModelData(
   for (int i = 0; i < 3; i++) 
     if (!args[i]->IsObject()) return NULL; 
 
-  // Create output object
-//   int layerLenght = 4;
-//   float arch[4] = { 1, 2, 3, 4 };
-
+  // Store data
   ModelData *output = new ModelData(
     env, context,
     args[0].As<v8::Array>(),
@@ -23,6 +20,8 @@ ModelData *Utils::getModelData(
     args[4].As<v8::Number>()
   );
   
+  output->logData();
+  output->logModel();
 
   return output;
 

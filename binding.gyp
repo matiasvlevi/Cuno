@@ -13,12 +13,17 @@
  "sources": [ 
     "./src/main.cu",
 
+    "./src/types/ModelData.cu",
+    "./src/types/DeviceModelData.cu",
+
     "./src/kernel/kernels/train.cu",
     "./src/kernel/kernels/dot.cu",
 
     "./src/bindings/bindings/train.cu",
     "./src/bindings/bindings/DotProd.cu",
    
+
+
     "./src/utils/getModelData.cu",
     "./src/utils/utils.cu"
  ], 

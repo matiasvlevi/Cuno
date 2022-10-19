@@ -5,14 +5,8 @@ void Bindings::train(const v8::FunctionCallbackInfo<v8::Value>& args) {
   v8::Local<v8::Context> context = env->GetCurrentContext();
  
   ModelData *input = Utils::getModelData(env, context, args); 
- 
 
-  for (int i = 0 ;i < input->arch.size(); i++)
-    std::cout << input->arch[i] << std::endl;
-
-
-
-//   Kernel::trainWrapper(/* ... */);
+  Kernel::trainWrapper(/* input*/);
 // 
 //   // Convert to JS Array
 //   v8::Local<v8::Array> buffer = v8::Array::New(env, input->outputLength);

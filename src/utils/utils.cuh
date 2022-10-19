@@ -1,9 +1,6 @@
-
-#include <node/node.h>
+#include "../types/methodInput.cuh"
 #include "../kernel/kernel.cuh"
 
-#include "../types/methodInput.cuh"
-#include "../types/weights.cuh"
 
 #ifndef UTILS_H
 #define UTILS_H
