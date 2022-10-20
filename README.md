@@ -11,11 +11,12 @@ The goal is to speed up `Dann.prototype.backpropagate` by implementing a batch s
 ### Install
 
 ```
-git clone --recurse-submodules https://github.com/matiasvlevi/Cuno.git
+git clone https://github.com/matiasvlevi/Cuno.git
 
 cd Cuno
 npm i
 
+git clone https://github.com/matiasvlevi/Dann.git
 cd Dann
 git checkout Cuno
 ```
