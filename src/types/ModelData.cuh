@@ -1,5 +1,5 @@
-
 #include <node/node.h>
+#include <iostream>
 
 #ifndef MODELDATA_H
 #define MODELDATA_H
@@ -9,14 +9,15 @@ class ModelData {
 
     // Training config 
     int epoch;
-    std::vector<float*> inputs;
-    std::vector<float*> outputs;
+    std::vector<double*> inputs;
+    std::vector<double*> outputs;
 
     // Model
     std::vector<int> arch;
-    std::vector<float*> layers;
-    std::vector<float*> weights;
-    std::vector<float*> biases;
+    std::vector<double*> layers;
+    std::vector<double*> weights;
+    std::vector<double*> biases;
+
     ModelData();
     ModelData(
       v8::Isolate *env,
@@ -28,7 +29,13 @@ class ModelData {
       v8::Local<v8::Number> epoch
     );
 
-    void setWeights(int index, float *weight_ptr);
+    static size_t MAX_HOST_ALLOC;
+    static size_t MAX_DEVICE_ALLOC;
+
+    static size_t getMemoryUsage(std::vector<int> arch);
+    static void debugMemory(const size_t model_size, const size_t data_size);
+
+    void setWeights(int index, double *weight_ptr);
 
     template <class T> 
     void logPtr(T values, int length);
@@ -39,13 +46,13 @@ class ModelData {
     template <class T> 
     void logArrayAsModelComponent(std::vector<T> array, int dec = 0);
 
-    void logWeights(std::vector<float *> weights);
+    void logWeights(std::vector<double *> weights);
 
     void logData();
 
     void logModel(); 
 
-    float *fromArrayToFloatAlloc(
+    double *fromArrayToFloatAlloc(
       v8::Local<v8::Context> context,
       v8::Local<v8::Array> array
     );

@@ -6,7 +6,7 @@ void Bindings::DotProd(const v8::FunctionCallbackInfo<v8::Value>& args) {
 
   MethodInput *input = Utils::convertArgs(context, args); 
 
-  float *c = (float*)malloc(sizeof(float) * input->outputLength);
+  double *c = (double*)malloc(sizeof(double) * input->outputLength);
 
   Kernel::DotWrapper(input->a, input->b, c, input->M, input->N, input->P);
 

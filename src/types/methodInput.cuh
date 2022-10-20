@@ -3,13 +3,13 @@
 
 class MethodInput {
 public:
-  float *a;
-  float *b;
+  double *a;
+  double *b;
   int N, M, P;
   int outputLength;
   MethodInput(int N, int M, int P) {
-    this->a = (float*)malloc(sizeof(float) * M * N);
-    this->b = (float*)malloc(sizeof(float) * N * P);
+    this->a = (double*)malloc(sizeof(double) * M * N);
+    this->b = (double*)malloc(sizeof(double) * N * P);
     this->N = N;
     this->M = M;
     this->P = P;

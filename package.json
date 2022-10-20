@@ -5,7 +5,7 @@
   "main": "build/Release/cuno",
   "scripts": {
 
-    "test":"/usr/bin/node ./Dann/test/manual-tests/node/empty-example/test.js",
+    "test":"/usr/bin/node ./Dann/test/manual-tests/node/empty-example/test.js --max-old-space-size=8192",
     "benchmark":"/usr/bin/node ./tests/benchmark.js",
     "build": "node-gyp rebuild"
   },

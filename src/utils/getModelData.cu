@@ -19,9 +19,6 @@ ModelData *Utils::getModelData(
     args[3].As<v8::Array>(),
     args[4].As<v8::Number>()
   );
-  
-  output->logData();
-  output->logModel();
 
   return output;
 

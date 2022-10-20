@@ -6,10 +6,11 @@
 class DeviceModelData: public ModelData
 {
 public:
-    std::vector<float*> errors;
-    std::vector<float*> gradients;
+    std::vector<double*> errors;
+    std::vector<double*> gradients;
 
     DeviceModelData(ModelData* parent);
+    ~DeviceModelData();
 };
 
 #endif

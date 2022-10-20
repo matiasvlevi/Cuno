@@ -1,6 +1,5 @@
 #include "../types/methodInput.cuh"
-#include "../kernel/kernel.cuh"
-
+#include "../types/DeviceModelData.cuh"
 
 #ifndef UTILS_H
 #define UTILS_H

@@ -19,7 +19,7 @@
     "./src/kernel/kernels/train.cu",
     "./src/kernel/kernels/dot.cu",
 
-    "./src/bindings/bindings/train.cu",
+    "./src/bindings/bindings/trainModel.cu",
     "./src/bindings/bindings/DotProd.cu",
    
 

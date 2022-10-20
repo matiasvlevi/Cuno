@@ -1,4 +1,4 @@
-#include "../utils/utils.cuh"
+#include "../kernel/kernel.cuh"
 
 #ifndef BINDINGS_H
 #define BINDINGS_H

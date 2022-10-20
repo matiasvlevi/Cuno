@@ -26,11 +26,12 @@
 //     return;
 // }
 
-void Kernel::trainWrapper() {
+void Kernel::TrainWrapper(
+    ModelData *host,
+    DeviceModelData *device
+) {
 
-  std::cout << "Hello" << std::endl;
+  //cudaMalloc(&(device->layers[i]), device->arch[i] * sizeof(double));
 
-    // DeviceModelData *device = new DeviceModelData(host);
-    // device->logModel();
 
 }

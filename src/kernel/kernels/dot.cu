@@ -2,9 +2,9 @@
 
 __global__ 
 void Kernel::dot(
-    float *a,
-    float *b,
-    float *c,
+    double *a,
+    double *b,
+    double *c,
     int M,
     int N,
     int P
@@ -16,7 +16,7 @@ void Kernel::dot(
     if (row >= M || col >= P) return;
 
     // Compute row
-    float sum = 0;
+    double sum = 0;
     for (int k = 0; k < N; k++) {
         sum += a[row * N + k] * b[k * P + col];
     }
@@ -26,20 +26,20 @@ void Kernel::dot(
 }
 
 void Kernel::DotWrapper(
-    float *a,
-    float *b,
-    float *c,
+    double *a,
+    double *b,
+    double *c,
     int M,
     int N,
     int P
 ) {
-    float *dev_a = 0; 
-    float *dev_b = 0;
-    float *dev_c = 0;
+    double *dev_a = 0; 
+    double *dev_b = 0;
+    double *dev_c = 0;
 
-    size_t sizeA = sizeof(float) * M * N;
-    size_t sizeB = sizeof(float) * N * P;
-    size_t sizeC = sizeof(float) * M * P;
+    size_t sizeA = sizeof(double) * M * N;
+    size_t sizeB = sizeof(double) * N * P;
+    size_t sizeC = sizeof(double) * M * P;
 
     cudaMalloc(&dev_a, sizeA);
     cudaMalloc(&dev_b, sizeB); 
