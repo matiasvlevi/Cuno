@@ -13,19 +13,19 @@
  "sources": [ 
     "./src/main.cu",
 
-    "./src/types/ModelData.cu",
-    "./src/types/DeviceModelData.cu",
+    "./src/utils/logger.cu",
+
+    "./src/components/ModelData.cu",
+    "./src/components/DeviceModelData.cu",
 
     "./src/kernel/kernels/train.cu",
     "./src/kernel/kernels/dot.cu",
 
+    "./src/bindings/convertArgs.cu",
     "./src/bindings/bindings/trainModel.cu",
-    "./src/bindings/bindings/DotProd.cu",
-   
+    "./src/bindings/bindings/DotProd.cu"
+  
 
-
-    "./src/utils/getModelData.cu",
-    "./src/utils/utils.cu"
  ], 
 
  'rules': [{

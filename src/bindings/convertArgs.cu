@@ -1,6 +1,6 @@
-#include "./utils.cuh"
+#include "./bindings.cuh"
 
-MethodInput *Utils::convertArgs(
+MethodInput *Bindings::Utils::convertArgs(
     const v8::Local<v8::Context> context,
     const v8::FunctionCallbackInfo<v8::Value>& args
 ) {
@@ -15,9 +15,9 @@ MethodInput *Utils::convertArgs(
 
   // Create output object
   MethodInput *output = new MethodInput(
-    args[2].As<v8::Number>()->Value(),
-    args[3].As<v8::Number>()->Value(),
-    args[4].As<v8::Number>()->Value()
+    args[0].As<v8::Array>()->Length(), // M
+    args[1].As<v8::Array>()->Length(), // N
+    args[1].As<v8::Array>()->Length()  // P 
   );
   
   int i, j;

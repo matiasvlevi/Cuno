@@ -13,7 +13,10 @@ void Kernel::dot(
     int col = blockIdx.x * blockDim.x + threadIdx.x;	
 
     // Abort if out of range
-    if (row >= M || col >= P) return;
+    if (row >= M || col >= P) {
+      printf("Kernel out of range! %d, %d\n", row, col);
+      return;
+    }
 
     // Compute row
     double sum = 0;
@@ -22,6 +25,31 @@ void Kernel::dot(
     }
     c[row * P + col] = sum;
 
+    return;
+}
+
+__global__ 
+void Kernel::dotOpt(
+    double *a,
+    double *b,
+    double *c,
+    int M,
+    int N,
+    int P
+) {
+    int row = blockIdx.y * blockDim.y + threadIdx.y;
+    int col = blockIdx.x * blockDim.x + threadIdx.x;	
+
+    // Abort if out of range
+    if (row >= M || col >= N) {
+      return;
+    }
+
+
+    //printf("Pos: %d, %d Vals: %d %d %d\n", row, col, a[row * N + col], b[col * P]);
+
+    c[row * P] += a[row * N + col] * b[col * P];
+    
     return;
 }
 

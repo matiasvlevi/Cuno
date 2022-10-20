@@ -4,7 +4,7 @@ void Bindings::DotProd(const v8::FunctionCallbackInfo<v8::Value>& args) {
   v8::Isolate* env = args.GetIsolate();
   v8::Local<v8::Context> context = env->GetCurrentContext();
 
-  MethodInput *input = Utils::convertArgs(context, args); 
+  MethodInput *input = Bindings::Utils::convertArgs(context, args); 
 
   double *c = (double*)malloc(sizeof(double) * input->outputLength);
 

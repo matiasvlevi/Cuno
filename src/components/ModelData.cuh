@@ -1,5 +1,4 @@
-#include <node/node.h>
-#include <iostream>
+#include "../utils/logger.cuh"
 
 #ifndef MODELDATA_H
 #define MODELDATA_H
@@ -13,13 +12,23 @@ class ModelData {
     std::vector<double*> outputs;
 
     // Model
-    std::vector<int> arch;
+    std::vector<unsigned int> arch;
     std::vector<double*> layers;
     std::vector<double*> weights;
     std::vector<double*> biases;
 
+    // Default
     ModelData();
+
+    // From v8 Args
     ModelData(
+      v8::Isolate *env,
+      const v8::Local<v8::Context> context,
+      const v8::FunctionCallbackInfo<v8::Value>& args
+    );
+
+    // From filtered v8 values
+    void Allocate(
       v8::Isolate *env,
       v8::Local<v8::Context> context,
       v8::Local<v8::Array> arch,
@@ -32,25 +41,19 @@ class ModelData {
     static size_t MAX_HOST_ALLOC;
     static size_t MAX_DEVICE_ALLOC;
 
-    static size_t getMemoryUsage(std::vector<int> arch);
+    static size_t getMemoryUsage(std::vector<unsigned int> arch);
     static void debugMemory(const size_t model_size, const size_t data_size);
 
     void setWeights(int index, double *weight_ptr);
 
-    template <class T> 
-    void logPtr(T values, int length);
-
-    template <class T> 
-    void logArrayData(std::vector<T> array, int length = 0);
-
-    template <class T> 
-    void logArrayAsModelComponent(std::vector<T> array, int dec = 0);
-
-    void logWeights(std::vector<double *> weights);
+    void logLayers();
 
     void logData();
 
     void logModel(); 
+
+    template <class T>
+    void ptr_arr(T values, unsigned int length);
 
     double *fromArrayToFloatAlloc(
       v8::Local<v8::Context> context,

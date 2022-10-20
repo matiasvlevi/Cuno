@@ -5,13 +5,35 @@ size_t ModelData::MAX_DEVICE_ALLOC = 512000000;
 
 ModelData::ModelData() {
   this->epoch = 1;
-  this->arch = std::vector<int>();
+  this->arch = std::vector<unsigned int>();
   this->weights = std::vector<double*>();
   this->biases = std::vector<double*>();
   this->layers = std::vector<double*>();
 }
 
 ModelData::ModelData(
+    v8::Isolate *env,
+    const v8::Local<v8::Context> context,
+    const v8::FunctionCallbackInfo<v8::Value>& args
+) {
+  
+  // Abort if no array specified
+  for (int i = 0; i < 3; i++) 
+    if (!args[i]->IsObject()) return; 
+
+  Allocate(
+    env, context,
+    args[0].As<v8::Array>(),
+    args[1].As<v8::Array>(),
+    args[2].As<v8::Array>(),
+    args[3].As<v8::Array>(),
+    args[4].As<v8::Number>()
+  );;
+
+}
+
+
+void ModelData::Allocate(
   v8::Isolate *env,
   v8::Local<v8::Context> context,
   v8::Local<v8::Array> arch,
@@ -22,7 +44,7 @@ ModelData::ModelData(
 ) {
  
   // Get architecture
-  this->arch = this->toArray<int>(context, arch);
+  this->arch = this->toArray<unsigned int>(context, arch);
 
 
   size_t data_size = data->Length() * (this->arch[0] + this->arch[this->arch.size()-1]);
@@ -82,10 +104,10 @@ ModelData::ModelData(
   this->weights = this->jaggedToAlloc<double*>(context, weights);
 }
 
-size_t ModelData::getMemoryUsage(std::vector<int> arch) {
+size_t ModelData::getMemoryUsage(std::vector<unsigned int> arch) {
   size_t weights_size = 0;
   size_t layers_size = 0;
-  size_t arch_size = arch.size() * sizeof(int);
+  size_t arch_size = arch.size() * sizeof(unsigned int);
 
   for (int i = 0; i < arch.size(); i++) {
     layers_size += arch[i] * sizeof(double);
@@ -109,75 +131,48 @@ void ModelData::debugMemory(const size_t model_size, const size_t data_size) {
 
 } 
 
-
-template <class T>
-void ModelData::logPtr(T values, int length) {
-
-  for (int i = 0; i < length-1; i++) 
-    std::cout << "\x1b[92m" << values[i] << "\x1b[0m, ";
-
-  std::cout << "\x1b[92m" << values[length-1] << "\x1b[0m";
-  std::cout << "\n" << std::endl;
-}
-
-template <class T>
-void ModelData::logArrayData(std::vector<T> array, int length) {
-  for (int i = 0; i < array.size(); i++) {
-    this->logPtr<T>(array[i], (length > 0) ? length : this->arch[i+1]);
-  } 
-  std::cout << "\n";
-} 
-
-template <class T>
-void ModelData::logArrayAsModelComponent(std::vector<T> array, int dec) {
-
-  std::cout << "fptr VECTOR" << std::endl;
-  for (int i = 0; i < array.size(); i++) {
-    this->logPtr<T>(array[i], this->arch[i+dec]);
-  } 
-} 
-
-void ModelData::logWeights(std::vector<double *> weights) {
-  for (int i = 0; i < weights.size(); i++) {
-    
-    std::cout << "Weights " << i <<
-      "  (" << this->arch[i] <<
-      "," << this->arch[i+1] <<  ") {";
-
-    for (int j = 0; j < this->arch[i] * this->arch[i+1]; j++) {
-    
-      if (j % this->arch[i+1] == 0) 
-        std::cout << "\n\t";
-      else 
-        std::cout << ", ";
-      
-      std::cout << "\x1b[92m" << weights[i][j] << "\x1b[0m";
-    }
-
-    std::cout << "\n}\n" << std::endl;
-  }
-}
-
 void ModelData::logData() {
   std::cout << "DATASET --- Inputs ---\n" << std:: endl;
-  this->logArrayData<double *>(this->inputs, this->arch[0]);
+  for (int i = 0; i < this->inputs.size(); i++)
+    this->ptr_arr<double*>(this->inputs[i], this->arch[0]);
 
-  std::cout << "DATASET --- Output ---\n" << std:: endl;
-  this->logArrayData<double *>(this->outputs, this->arch[this->arch.size()-1]);
+  std::cout << "DATASET --- Output ---\n" << std::endl;
+  for (int i = 0; i < this->outputs.size(); i++)
+    this->ptr_arr<double*>(this->outputs[i], this->arch[this->arch.size()-1]);
 }
 
 void ModelData::logModel() {
   
   std::cout << "Epoch target specified: \n" << this->epoch << std::endl;
 
-  std::cout << "--- Weights --- \n" << std:: endl;
-  this->logWeights(this->weights);
+  std::cout << "\nWeights\n" << std::endl;
+  for (int i = 0; i < this->arch.size(); i++)
+    Log::weights<double*>(this->weights, this->arch, i);
 
-  std::cout << "--- Biases --- \n" << std:: endl;
-  this->logArrayAsModelComponent<double *>(this->biases, 1);
+  std::cout << "\nBiases\n" << std::endl;
+  for (int i = 0; i < this->arch.size(); i++)
+    this->ptr_arr<double*>(this->biases[i], this->arch[i]);
 
-  std::cout << "--- Layers ---\n" << std:: endl;
-  this->logArrayAsModelComponent<double *>(this->layers);
+  std::cout << "\nLayers\n" << std::endl;
+  for (int i = 0; i < this->arch.size(); i++)
+    this->ptr_arr<double*>(this->layers[i], this->arch[i]);
+}
+
+void ModelData::logLayers() {
+  std::cout << "\nLayers\n" << std:: endl;
+
+  for (int i = 0; i < this->arch.size(); i++)
+    this->ptr_arr<double*>(this->layers[i], this->arch[i]);
+}
+
+template <class T>
+void ModelData::ptr_arr(T values, unsigned int length) {
+  std::cout << "ptr: \x1b[93m" << values << "\x1b[0m (" << length << ")" << " { ";
+  for (unsigned int i = 0; i < length; i++) {
+    std::cout << "\x1b[92m" << *(values+i);
+    if (i < length-1) std::cout << "\x1b[0m, ";
+  }
+  std::cout << " \x1b[0m}\n" << std::endl;
 }
 
 template <class T>
