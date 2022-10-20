@@ -3,3 +3,4 @@ build
 *.log
 *.odt
 *.ods
+.~lock.benchmark_2060.ods#
