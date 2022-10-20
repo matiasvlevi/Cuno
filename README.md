@@ -67,4 +67,3 @@ npm run test
 Here is a logarithmic graph comparing matrix dot products with the Cuno Addon and with native JS 
 
 ![Image](https://i.ibb.co/gPfKKHn/Cuno-Log-Graph.png)
-
