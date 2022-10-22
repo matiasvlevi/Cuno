@@ -12,20 +12,11 @@
  "target_name": "cuno",
  "sources": [ 
     "./src/main.cu",
+    "./src/kernels/dot.cu",
+    "./src/wrappers/dot_wrap.cu",
 
-    "./src/utils/logger.cu",
-
-    "./src/components/ModelData.cu",
-    "./src/components/DeviceModelData.cu",
-
-    "./src/kernel/kernels/train.cu",
-    "./src/kernel/kernels/dot.cu",
-
-    "./src/bindings/convertArgs.cu",
-    "./src/bindings/bindings/trainModel.cu",
-    "./src/bindings/bindings/DotProd.cu"
-  
-
+    "./src/kernels/matVecDot.cu",
+    "./src/wrappers/train_wrap.cu"
  ], 
 
  'rules': [{
