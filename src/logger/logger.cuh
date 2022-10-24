@@ -35,13 +35,13 @@ namespace Log {
   template <typename T>
   void deviceMatrix(T *values, int R, int C);
 
-  template <class T>
+  template <typename T>
   void deviceArray(T *values, int N);
 
-  template <class T>
+  template <typename T>
   void hostMatrix(T *values, int R, int C);
 
-  template <class T>
+  template <typename T>
   void hostArray(T *values, int N); 
 };
 

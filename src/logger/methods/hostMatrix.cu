@@ -1,10 +1,10 @@
 #include "../logger.cuh"
 
 
-template <class T>
-void Log::hostMatrix(T *values, int R, int C) {
+template <>
+void Log::hostMatrix<double>(double *values, int R, int C) {
     std::cout << 
-        Log::Header<T>("Host Matrix", values, R, C) 
+        Log::Header<double>("Host Matrix", values, R, C) 
     << " {";
 
     for (int j = 0; j < R * C; j++) {

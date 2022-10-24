@@ -1,20 +1,20 @@
 #include "../logger.cuh"
 
 
-template <class T> 
-void Log::deviceArray(T *values, int N) {
+template <> 
+void Log::deviceArray<double>(double *values, int N) {
     // Allocate temporary stack pointer for log
-    T host_values[N];
+    double host_values[N];
 
     // Copy to stack
     cudaMemcpy(
         host_values, values,
-        sizeof(T) * N,
+        sizeof(double) * N,
         cudaMemcpyDeviceToHost
     );
 
     std::cout << 
-        Log::Header<T>("Device Array", values, N) 
+        Log::Header<double>("Device Array", values, N) 
     << " { ";
 
     for (int i = 0; i < N; i++) {

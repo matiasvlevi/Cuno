@@ -26,7 +26,7 @@ public:
     this->errors    = (T**)malloc(sizeof(T*) * length-1);
     for (uint8_t i = 0; i < length; i++) this->arch[i] = arch[i];
 
-    //this->allocate();
+    this->allocate();
   }
 
   void allocate() {
@@ -35,13 +35,12 @@ public:
  
       cudaMalloc(&(this->layers[i])   , sizeof(T) * this->arch[i]);
 
-      if (i == this->length-1) continue;
+      if (i >= this->length-1) continue;
 
       this->biases[i]    = 0;
       this->weights[i]   = 0;
       this->gradients[i] = 0;
       this->errors[i]    = 0;
-
       cudaMalloc(&(this->biases[i])   , sizeof(T) * this->arch[i+1]);
       cudaMalloc(&(this->weights[i])  , sizeof(T) * this->arch[i] * this->arch[i+1]);
       cudaMalloc(&(this->gradients[i]), sizeof(T) * this->arch[i+1]);
@@ -59,32 +58,34 @@ public:
   ) {
     for (uint8_t i = 0; i < this->length; i++) {
       cudaMemcpy(
-        this->layers[i], layers[i],
+        this->layers[i], (T*)layers[i],
         sizeof(T) * this->arch[i],
         cudaMemcpyHostToDevice
       );
-      if (i == this->length-1) continue;
+      if (i >= this->length-1) continue;
 
       cudaMemcpy(
-        this->biases[i], biases[i],
+        this->biases[i], (T*)biases[i],
         sizeof(T) * this->arch[i+1],
         cudaMemcpyHostToDevice
       );
 
       cudaMemcpy(
-        this->weights[i], weights[i],
+        this->weights[i], (T*)weights[i],
         sizeof(T) * this->arch[i] * this->arch[i+1],
         cudaMemcpyHostToDevice
       );
-
+      //
+      // TODO: FIX DEVICE WEIGHTS SEGFAULT 
+      //
       cudaMemcpy(
-        this->gradients[i], gradients[i],
+        this->gradients[i], (T*)gradients[i],
         sizeof(T) * this->arch[i+1],
         cudaMemcpyHostToDevice
       );
 
       cudaMemcpy(
-        this->errors[i], errors[i],
+        this->errors[i], (T*)errors[i],
         sizeof(T) * this->arch[i+1],
         cudaMemcpyHostToDevice
       );

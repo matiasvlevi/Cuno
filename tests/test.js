@@ -7,4 +7,4 @@ model.addHiddenLayer(6);
 model.addHiddenLayer(4);
 model.makeWeights();
 
-Cuno.dot(model);
+Cuno.train(model);
