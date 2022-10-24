@@ -146,12 +146,12 @@ namespace v8Utils {
 
     Log::hostArray<int>(model->arch, model->length);
 
-    T *layers[model->length];
-    for (uint8_t i = 0 ; i < model->length; i++) {
-      T list[model->arch[i]] = {};
-      
-      layers[i] = list;
-    }
+//     T *layers[model->length];
+//     for (uint8_t i = 0 ; i < model->length; i++) {
+//       T list[model->arch[i]] = {};
+//       
+//       layers[i] = list;
+//     }
 
 //     T *biases[model->length-1];
 //     for (uint8_t i = 0 ; i < model->length-1; i++) {
@@ -182,7 +182,7 @@ namespace v8Utils {
 //       }
 //     }
 
-    Log::hostArray<double>(layers[0], model->arch[0]);
+    //Log::hostArray<double>(layers[0], model->arch[0]);
 // 
 //     model->toDevice(
 //      layers, biases, weights, gradients, errors 

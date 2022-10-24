@@ -1,6 +1,5 @@
 #ifndef DEVICE_DANN_H
 #define DEVICE_DANN_H
-namespace Cuno {
 
 template <class T>
 class DeviceDann {
@@ -20,9 +19,9 @@ public:
     this->length = length;
     this->arch = (int*)malloc(sizeof(int) * length);
     
-    this->layers   = (T**)malloc(sizeof(T*) * length);
-    this->biases   = (T**)malloc(sizeof(T*) * length-1);
-    this->weights  = (T**)malloc(sizeof(T*) * length-1);
+    this->layers    = (T**)malloc(sizeof(T*) * length);
+    this->biases    = (T**)malloc(sizeof(T*) * length-1);
+    this->weights   = (T**)malloc(sizeof(T*) * length-1);
     this->gradients = (T**)malloc(sizeof(T*) * length-1);
     this->errors    = (T**)malloc(sizeof(T*) * length-1);
     for (uint8_t i = 0; i < length; i++) this->arch[i] = arch[i];
@@ -118,5 +117,4 @@ public:
 
 };
 
-};
 #endif

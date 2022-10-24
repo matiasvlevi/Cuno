@@ -11,10 +11,16 @@
 {
  "target_name": "cuno",
  "sources": [ 
+
+    "./src/logger/methods/deviceArray.cu",
+    "./src/logger/methods/deviceMatrix.cu",
+    "./src/logger/methods/hostArray.cu",
+    "./src/logger/methods/hostMatrix.cu",
+
+
     "./src/main.cu",
     "./src/kernels/dot.cu",
     "./src/wrappers/dot_wrap.cu",
-
     "./src/kernels/matVecDot.cu",
     "./src/wrappers/train_wrap.cu"
  ], 

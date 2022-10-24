@@ -1,5 +1,5 @@
 const Cuno = require('../build/Release/cuno');
-const { Matrix } = require('../../Dann/build/dann.js');
+
 const a = [
   [1, 5, 2, 4],
   [4, 7, 2, 1],
@@ -14,9 +14,9 @@ const b = [
   [8, 5, 6]
 ];
 
-let c = new Matrix();
-c.set(Cuno.dot(
+let output = Cuno.dot(
   a, b
-))
-c.log();
+);
+
+console.log(output)
 
