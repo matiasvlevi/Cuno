@@ -17,6 +17,8 @@
     "./src/logger/methods/hostArray.cu",
     "./src/logger/methods/hostMatrix.cu",
 
+    "./src/v8/methods/FromNativeModel.cu",
+    "./src/v8/methods/getSingleCallArgs.cu",
 
     "./src/main.cu",
     "./src/kernels/dot.cu",

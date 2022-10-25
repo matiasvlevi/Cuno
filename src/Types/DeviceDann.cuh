@@ -19,7 +19,8 @@ public:
   T **gradients;
   T **errors;
 
-  DeviceDann(int *arch, uint8_t length) {
+  DeviceDann(int *arch, uint8_t length) 
+  {
     this->length = length;
     this->arch = (int*)malloc(sizeof(int) * length);
     
@@ -32,7 +33,8 @@ public:
     this->allocate();
   }
 
-  void allocate() {
+  void allocate() 
+  {
    for (uint8_t i = 0; i < this->length; i++) {
 
       this->layers[i]    = 0; 
@@ -44,27 +46,21 @@ public:
       this->weights[i]   = 0;
       this->gradients[i] = 0;
       this->errors[i]    = 0;
-
-      std::cout << this->arch[i] << " * " << this->arch[i+1] << "=" << this->arch[i] * this->arch[i+1] << std::endl;
-
+      
       cudaMalloc(&(this->biases[i])   , sizeof(T) * this->arch[i+1]);
-      cudaError_t err = cudaMalloc(&(this->weights[i])  , sizeof(T) * this->arch[i] * this->arch[i+1]);
-
-      std::cout << cudaGetErrorString(err) << std::endl;
-
+      cudaMalloc(&(this->weights[i])  , sizeof(T) * this->arch[i] * this->arch[i+1]);
       cudaMalloc(&(this->gradients[i]), sizeof(T) * this->arch[i+1]); 
       cudaMalloc(&(this->errors[i])   , sizeof(T) * this->arch[i+1]);
     }
   }
-
 
   void toDevice(
     T **layers,
     T **biases,
     T **weights,
     T **gradients,
-    T **errors
-  ) {
+    T **errors) 
+  {
     for (uint8_t i = 0; i < this->length; i++) {
       cudaMemcpy(
         this->layers[i], (T*)layers[i],
