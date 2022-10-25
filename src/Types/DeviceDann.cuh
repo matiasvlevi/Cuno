@@ -1,5 +1,9 @@
+#include "../cuno.cuh"
+
 #ifndef DEVICE_DANN_H
 #define DEVICE_DANN_H
+
+namespace Cuno { 
 
 template <class T>
 class DeviceDann {
@@ -25,14 +29,13 @@ public:
     this->gradients = (T**)malloc(sizeof(T*) * length-1);
     this->errors    = (T**)malloc(sizeof(T*) * length-1);
     for (uint8_t i = 0; i < length; i++) this->arch[i] = arch[i];
-
     this->allocate();
   }
 
   void allocate() {
    for (uint8_t i = 0; i < this->length; i++) {
-      this->layers[i]    = 0;
- 
+
+      this->layers[i]    = 0; 
       cudaMalloc(&(this->layers[i])   , sizeof(T) * this->arch[i]);
 
       if (i >= this->length-1) continue;
@@ -41,9 +44,15 @@ public:
       this->weights[i]   = 0;
       this->gradients[i] = 0;
       this->errors[i]    = 0;
+
+      std::cout << this->arch[i] << " * " << this->arch[i+1] << "=" << this->arch[i] * this->arch[i+1] << std::endl;
+
       cudaMalloc(&(this->biases[i])   , sizeof(T) * this->arch[i+1]);
-      cudaMalloc(&(this->weights[i])  , sizeof(T) * this->arch[i] * this->arch[i+1]);
-      cudaMalloc(&(this->gradients[i]), sizeof(T) * this->arch[i+1]);
+      cudaError_t err = cudaMalloc(&(this->weights[i])  , sizeof(T) * this->arch[i] * this->arch[i+1]);
+
+      std::cout << cudaGetErrorString(err) << std::endl;
+
+      cudaMalloc(&(this->gradients[i]), sizeof(T) * this->arch[i+1]); 
       cudaMalloc(&(this->errors[i])   , sizeof(T) * this->arch[i+1]);
     }
   }
@@ -71,13 +80,11 @@ public:
       );
 
       cudaMemcpy(
-        this->weights[i], (T*)weights[i],
+        this->weights[i], weights[i],
         sizeof(T) * this->arch[i] * this->arch[i+1],
         cudaMemcpyHostToDevice
       );
-      //
-      // TODO: FIX DEVICE WEIGHTS SEGFAULT 
-      //
+
       cudaMemcpy(
         this->gradients[i], (T*)gradients[i],
         sizeof(T) * this->arch[i+1],
@@ -118,4 +125,5 @@ public:
 
 };
 
+};
 #endif

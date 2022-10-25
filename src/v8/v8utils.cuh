@@ -121,6 +121,31 @@ namespace v8Utils {
     return array;
   }
 
+//   Local<Array> getRawMatrix(
+//       Local<Context> context,
+//       Isolate *env,
+//       Local<Object> matrix
+//   ) {
+//     return v8Utils::FromMaybe<Value>(matrix->Get(
+//         context,
+//         String::NewFromUtf8Literal(env, "matrix").As<Value>()
+//     )).As<Array>();
+//   } 
+// 
+
+  template <class T>
+  Local<T> getFrom(
+      Local<Context> context,
+      Isolate *env,
+      Local<Object> matrix,
+      const char *key
+  ) {
+    return v8Utils::FromMaybe<Value>(matrix->Get(
+        context,
+        v8Utils::FromMaybe<String>(String::NewFromUtf8(env, key)).As<Value>()
+    )).As<T>();
+  } 
+
   template <class T>
   DeviceDann<T> *FromNativeModel(
     Local<Context> context,
@@ -135,6 +160,14 @@ namespace v8Utils {
     Local<Array> native_arch = v8Utils::FromMaybe<Value>(maybe_arch).As<Array>();
 
 
+    // Get model's weights
+    Local<Array> native_weights = v8Utils::getFrom<Array>(context, env, native_model, "weights"); 
+
+    // Get model's weights
+    Local<Array> native_biases = v8Utils::getFrom<Array>(context, env, native_model, "biases"); 
+
+
+
     int arch[native_arch->Length()];
     for (int i = 0; i < native_arch->Length(); i++) {
       arch[i] = v8Utils::getFromArray<Number>(context, native_arch, i)->Value();
@@ -142,51 +175,74 @@ namespace v8Utils {
 
     DeviceDann<T> *model = new DeviceDann<T>(arch, (uint8_t)native_arch->Length());
 
-     T *layers[model->length];
-     for (uint8_t i = 0 ; i < model->length; i++) {
-       layers[i] = (T*)malloc(sizeof(T) * model->arch[i]);
-       for (int j = 0; j < model->arch[i]; j++) {
-          layers[i][j] = 0; 
-       }
-     } 
+    T *layers[model->length];
+    for (uint8_t i = 0 ; i < model->length; i++) {
+      layers[i] = (T*)malloc(sizeof(T) * model->arch[i]);
+      for (int j = 0; j < model->arch[i]; j++) {
+        layers[i][j] = 0; 
+      }
+    } 
 
-      T *biases[model->length-1];
-      for (uint8_t i = 0 ; i < model->length-1; i++) {
-        biases[i] = (T*)malloc(sizeof(T) * model->arch[i+1]);
-        for (int j = 0; j < model->arch[i+1]; j++) {
-          biases[i][j] = 0; 
-        }
+    T *biases[model->length-1];
+    for (uint8_t i = 0 ; i < model->length-1; i++) {
+      Local<Object> matrix = v8Utils::getFromArray<Object>(context, native_weights, i);
+      Local<Array> bmatrix = v8Utils::getFrom<Array>(context, env,
+        matrix,
+        "matrix"
+      );
+      biases[i] = (T*)malloc(sizeof(T) * model->arch[i+1]);
+      for (int j = 0; j < model->arch[i+1]; j++) {
+        biases[i][j] = v8Utils::getFromArray<Number>(context,
+            v8Utils::getFromArray<Array>(context, bmatrix, j).As<Array>(), 0
+        )->Value(); 
       }
- 
-      T *weights[model->length-1];
-      for (uint8_t i = 0 ; i < model->length-1; i++) {
-        weights[i] = (T*)malloc(sizeof(T) * model->arch[i] * model->arch[i+1]);
-        for (int j = 0; j < model->arch[i] * model->arch[i+1]; j++) {
-          weights[i][j] = 0;
-        }
-      }
-  
-      T *gradients[model->length-1];
-      for (uint8_t i = 0 ; i < model->length-1; i++) {
-        gradients[i] = (T*)malloc(sizeof(T) * model->arch[i+1]);
-        for (int j = 0; j < model->arch[i+1]; j++) {
-          gradients[i][j] = 0; 
-        }      
-      }
-  
-      T *errors[model->length-1];
-      for (uint8_t i = 0 ; i < model->length-1; i++) {
-        errors[i] = (T*)malloc(sizeof(T) * model->arch[i+1]);
-        for (int j = 0; j < model->arch[i+1]; j++) {
-          errors[i][j] = 0; 
-        }
-      }
+    }
 
-     Log::hostArray<double>(layers[0], model->arch[0]);
-     //Log::hostArray<double>(weights[0], model->arch[0] * model->arch[1]);
-     model->toDevice(
-       layers, biases, weights, gradients, errors 
-     );
+    T *weights[model->length-1];
+    for (uint8_t i = 0 ; i < model->length-1; i++) {
+      
+      weights[i] = (T*)malloc(sizeof(T) * model->arch[i] * model->arch[i+1]);
+      Local<Object> matrix = v8Utils::getFromArray<Object>(context, native_weights, i);
+      Local<Array> wmatrix = v8Utils::getFrom<Array>(context, env,
+        matrix,
+        "matrix"
+      );
+
+      int k = 0;
+      int r = 0; 
+      Local<Array> row;
+      for (int j = 0; j < model->arch[i] * model->arch[i+1]; j++) {
+        if (j % model->arch[i] == 0) {
+          row = v8Utils::getFromArray<Array>(context, wmatrix, r).As<Array>();
+          k = 0;
+          r++;
+        } 
+        weights[i][j] = v8Utils::getFromArray<Number>(context, row, k)->Value();
+        k++;
+      }
+    }
+
+    T *gradients[model->length-1];
+    for (uint8_t i = 0 ; i < model->length-1; i++) {
+      gradients[i] = (T*)malloc(sizeof(T) * model->arch[i+1]);
+      for (int j = 0; j < model->arch[i+1]; j++) {
+        gradients[i][j] = 0; 
+      }      
+    }
+
+    T *errors[model->length-1];
+    for (uint8_t i = 0 ; i < model->length-1; i++) {
+      errors[i] = (T*)malloc(sizeof(T) * model->arch[i+1]);
+      for (int j = 0; j < model->arch[i+1]; j++) {
+        errors[i][j] = 0; 
+      }
+    }
+
+    Log::hostArray<double>(layers[0], model->arch[0]);
+
+    model->toDevice(
+      layers, biases, weights, gradients, errors 
+    );
 
     for(int i = 0; i < model->length; i++) {
       free(layers[i]);
@@ -196,8 +252,6 @@ namespace v8Utils {
       free(errors[i]);
       free(weights[i]);
     }
-
-    Log::deviceArray<double>(model->weights[1], 1024 * 1024);// * model->arch[1]);
 
     return model; 
   }

@@ -1,6 +1,8 @@
+#include "../cuno.cuh"
 
 #ifndef METHOD_INPUT_H
 #define METHOD_INPUT_H
+namespace Cuno {
 
 template <class T>
 class MethodInput {
@@ -56,5 +58,7 @@ public:
     cudaFree(this->b);
     cudaFree(this->c);
   }
+};
+
 };
 #endif

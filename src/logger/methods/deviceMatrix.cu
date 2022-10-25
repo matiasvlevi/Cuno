@@ -19,7 +19,7 @@ void Log::deviceMatrix<double>(double *values, int R, int C) {
     for (int j = 0; j < R * C; j++) {
         if (j % C == 0) std::cout << "\n\t";
         else            std::cout << ", ";
-        
+
         std::cout << "\x1b[92m" << host_values[j] << "\x1b[0m";
     }
 

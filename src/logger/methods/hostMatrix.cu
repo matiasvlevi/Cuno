@@ -11,7 +11,7 @@ void Log::hostMatrix<double>(double *values, int R, int C) {
         if (j % C == 0) std::cout << "\n\t";
         else            std::cout << ", ";
         
-        std::cout << "\x1b[96m" << values[j] << "\x1b[0m";
+        std::cout << "\x1b[92m" << values[j] << "\x1b[0m";
     }
 
     std::cout << "\n}\n" << std::endl;
