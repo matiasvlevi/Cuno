@@ -11,21 +11,23 @@
 {
  "target_name": "cuno",
  "sources": [ 
+
+    "./src/logger/methods/deviceArray.cu",
+    "./src/logger/methods/deviceMatrix.cu",
+    "./src/logger/methods/hostArray.cu",
+    "./src/logger/methods/hostMatrix.cu",
+
+    "./src/v8/methods/FromNativeModel.cu",
+    "./src/v8/methods/getSingleCallArgs.cu",
+
+    "./src/Types/DeviceDann/allocate.cu",
+    "./src/Types/DeviceDann/toDevice.cu",
+
     "./src/main.cu",
-
-    "./src/utils/logger.cu",
-
-    "./src/components/ModelData.cu",
-    "./src/components/DeviceModelData.cu",
-
-    "./src/kernel/kernels/train.cu",
-    "./src/kernel/kernels/dot.cu",
-
-    "./src/bindings/convertArgs.cu",
-    "./src/bindings/bindings/trainModel.cu",
-    "./src/bindings/bindings/DotProd.cu"
-  
-
+    "./src/kernels/dot.cu",
+    "./src/wrappers/dot_wrap.cu",
+    "./src/kernels/matVecDot.cu",
+    "./src/wrappers/train_wrap.cu"
  ], 
 
  'rules': [{

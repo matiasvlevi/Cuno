@@ -1,9 +1,9 @@
 #include "./bindings/bindings.cuh"
 
-void Bindings::Init(v8::Local<v8::Object> exports)  {
-  NODE_SET_METHOD(exports, "dot", Bindings::DotProd);
-  NODE_SET_METHOD(exports, "train", Bindings::train);
+void Cuno::Bindings::Init(v8::Local<v8::Object> exports)  {
+  NODE_SET_METHOD(exports, "train", Cuno::Wrappers::train_wrap);
+  NODE_SET_METHOD(exports, "dot"  , Cuno::Wrappers::dot_wrap);
 };
 
-NODE_MODULE(NODE_GYP_MODULE_NAME, Bindings::Init)
+NODE_MODULE(NODE_GYP_MODULE_NAME, Cuno::Bindings::Init)
 
