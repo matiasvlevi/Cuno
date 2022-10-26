@@ -8,7 +8,7 @@ void Cuno::Wrappers::train_wrap(
 
   Cuno::DeviceDann<double> *nn = 
   Cuno::v8Utils::FromNativeModel<double>(context, env, args); 
- 
+
   for (int i = 0; i < nn->length; i++) {
     std::cout << "Layer " << i << std::endl;
     Log::deviceArray<double>(nn->layers[i], nn->arch[i]);
@@ -28,7 +28,8 @@ void Cuno::Wrappers::train_wrap(
     Log::deviceArray<double>(nn->gradients[i], nn->arch[i+1]);
 
   }
- 
-  args.GetReturnValue().Set(v8::Number::New(env, 1));
+  int x;
+  std::cin >> x;
+  args.GetReturnValue().Set(v8::Number::New(env, x));
 }
 

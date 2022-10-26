@@ -9,7 +9,7 @@ template <class T>
 class DeviceDann {
 public:
   // Model
-  uint8_t length;
+  int length;
   int *arch;
   T **layers;
   T **biases;
@@ -19,7 +19,7 @@ public:
   T **gradients;
   T **errors;
 
-  DeviceDann(int *arch, uint8_t length) 
+  DeviceDann(int *arch, int length) 
   {
     this->length = length;
     this->arch = (int*)malloc(sizeof(int) * length);
@@ -29,74 +29,22 @@ public:
     this->weights   = (T**)malloc(sizeof(T*) * length-1);
     this->gradients = (T**)malloc(sizeof(T*) * length-1);
     this->errors    = (T**)malloc(sizeof(T*) * length-1);
-    for (uint8_t i = 0; i < length; i++) this->arch[i] = arch[i];
+    for (int i = 0; i < length; i++) this->arch[i] = arch[i];
     this->allocate();
   }
 
-  void allocate() 
-  {
-   for (uint8_t i = 0; i < this->length; i++) {
-
-      this->layers[i]    = 0; 
-      cudaMalloc(&(this->layers[i])   , sizeof(T) * this->arch[i]);
-
-      if (i >= this->length-1) continue;
-
-      this->biases[i]    = 0;
-      this->weights[i]   = 0;
-      this->gradients[i] = 0;
-      this->errors[i]    = 0;
-      
-      cudaMalloc(&(this->biases[i])   , sizeof(T) * this->arch[i+1]);
-      cudaMalloc(&(this->weights[i])  , sizeof(T) * this->arch[i] * this->arch[i+1]);
-      cudaMalloc(&(this->gradients[i]), sizeof(T) * this->arch[i+1]); 
-      cudaMalloc(&(this->errors[i])   , sizeof(T) * this->arch[i+1]);
-    }
-  }
+  void allocate(); 
 
   void toDevice(
     T **layers,
     T **biases,
     T **weights,
     T **gradients,
-    T **errors) 
-  {
-    for (uint8_t i = 0; i < this->length; i++) {
-      cudaMemcpy(
-        this->layers[i], (T*)layers[i],
-        sizeof(T) * this->arch[i],
-        cudaMemcpyHostToDevice
-      );
-      if (i >= this->length-1) continue;
-
-      cudaMemcpy(
-        this->biases[i], (T*)biases[i],
-        sizeof(T) * this->arch[i+1],
-        cudaMemcpyHostToDevice
-      );
-
-      cudaMemcpy(
-        this->weights[i], weights[i],
-        sizeof(T) * this->arch[i] * this->arch[i+1],
-        cudaMemcpyHostToDevice
-      );
-
-      cudaMemcpy(
-        this->gradients[i], (T*)gradients[i],
-        sizeof(T) * this->arch[i+1],
-        cudaMemcpyHostToDevice
-      );
-
-      cudaMemcpy(
-        this->errors[i], (T*)errors[i],
-        sizeof(T) * this->arch[i+1],
-        cudaMemcpyHostToDevice
-      );
-    }
-  } 
+    T **errors
+  ); 
 
   ~DeviceDann() {
-    for (uint8_t i = 0; i < this->length; i++) {
+    for (int i = 0; i < this->length; i++) {
       cudaFree(this->layers[i]);
       cudaFree(this->biases[i]);
       cudaFree(this->weights[i]);

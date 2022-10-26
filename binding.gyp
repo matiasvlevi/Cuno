@@ -20,6 +20,9 @@
     "./src/v8/methods/FromNativeModel.cu",
     "./src/v8/methods/getSingleCallArgs.cu",
 
+    "./src/Types/DeviceDann/allocate.cu",
+    "./src/Types/DeviceDann/toDevice.cu",
+
     "./src/main.cu",
     "./src/kernels/dot.cu",
     "./src/wrappers/dot_wrap.cu",
