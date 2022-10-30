@@ -1,5 +1,4 @@
-#include "../logger.cuh"
-
+#include "../logger.hpp"
 
 template <>
 void Log::hostMatrix<double>(double *values, int R, int C) {

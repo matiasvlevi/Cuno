@@ -1,4 +1,4 @@
-#include "../v8/v8utils.cuh"
+#include "../v8/v8utils.hpp"
 #include "../kernels/kernels.cuh"
 
 #ifndef WRAPPERS_H

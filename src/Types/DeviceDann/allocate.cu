@@ -1,4 +1,4 @@
-#include "../DeviceDann.cuh"
+#include "./DeviceDann.cuh"
 
 
 template <>

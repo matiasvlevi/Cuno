@@ -1,5 +1,4 @@
-#include "../logger.cuh"
-
+#include "../logger.hpp"
 
 template <>
 void Log::hostArray<double>(double *values, int N) {

@@ -1,9 +1,9 @@
 #include <node.h>
 
-#include "../logger/logger.cuh"
+#include "../logger/logger.hpp"
 
-#include "../Types/MethodInput.cuh"
-#include "../Types/DeviceDann.cuh"
+#include "../Types/MethodInput/MethodInput.cuh"
+#include "../Types/DeviceDann/DeviceDann.cuh"
 
 #ifndef V8_UTILS_H
 #define V8_UTILS_H
