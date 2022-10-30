@@ -17,8 +17,8 @@
     "./src/logger/methods/hostArray.cu",
     "./src/logger/methods/hostMatrix.cu",
 
-    "./src/v8/methods/FromNativeModel.cu",
-    "./src/v8/methods/getSingleCallArgs.cu",
+    "./src/v8/methods/FromNativeModel.cpp",
+    "./src/v8/methods/getSingleCallArgs.cpp",
 
     "./src/Types/DeviceDann/allocate.cu",
     "./src/Types/DeviceDann/toDevice.cu",

@@ -5,10 +5,20 @@ void Cuno::Wrappers::ffw(DeviceDann<double> *nn, double *input) {
   cudaMemcpy(nn->layers[0], input,nn->arch[0] * sizeof(double), cudaMemcpyHostToDevice);
 
   for (int i = 0; i < nn->length-1; i++) {
-    Wrappers::matvec_wrap<double>(
+    dim3 THREADS;
+    THREADS.x = 32;
+    THREADS.y = 32;
+
+    int blocks = (nn->arch[i+1] + THREADS.y - 1) / THREADS.y;
+
+    dim3 BLOCKS;
+    BLOCKS.x = blocks;
+    BLOCKS.y = blocks;
+
+    Kernels::dot<<<BLOCKS, THREADS>>>(
        nn->weights[i], nn->layers[i],
        nn->layers[i+1],
-       nn->arch[i], nn->arch[i+1]
+       nn->arch[i], nn->arch[i+1], 1
     );
 
     Wrappers::add_wrap<double>(nn->layers[i+1], nn->biases[i], nn->arch[i+1]);

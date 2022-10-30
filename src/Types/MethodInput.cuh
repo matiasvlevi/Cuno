@@ -1,4 +1,5 @@
 #include "../cuno.cuh"
+#include <cuda_runtime.h>
 
 #ifndef METHOD_INPUT_H
 #define METHOD_INPUT_H
