@@ -8,7 +8,7 @@
     "dot":"/usr/bin/node ./tests/dotProd.js",
     "benchmark":"/usr/bin/node ./tests/benchmark.js",
     "build": "node-gyp rebuild",
-    "install": "cd Dann; npm ci ; cd .. ; npm ci"
+    "init": "git checkout dev; npm i; git submodule init; cd Dann; git checkout Cuno; cd .."
   },
   "dependencies": {
     "node-gyp"              : "^8.4.1"

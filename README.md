@@ -14,13 +14,9 @@ A Cuda kernel map would compute all model changes throughout the batch. This is 
 
 ```
 git clone https://github.com/matiasvlevi/Cuno.git
-
 cd Cuno
-npm i
 
-git submodule init
-cd Dann
-git checkout Cuno
+npm run init
 ```
 
 <br/>
