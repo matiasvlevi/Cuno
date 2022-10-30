@@ -24,9 +24,19 @@
     "./src/Types/DeviceDann/toDevice.cu",
 
     "./src/main.cu",
+
+    "./src/kernels/sigmoid.cu",
+    "./src/wrappers/sigmoid_wrap.cu",
+
+    "./src/kernels/add.cu",
+    "./src/wrappers/add_wrap.cu",
+
     "./src/kernels/dot.cu",
     "./src/wrappers/dot_wrap.cu",
+
     "./src/kernels/matVecDot.cu",
+    "./src/wrappers/matvec_wrap.cu",
+    
     "./src/wrappers/train_wrap.cu"
  ], 
 
