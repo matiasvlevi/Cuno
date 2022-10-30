@@ -89,8 +89,6 @@ Cuno::DeviceDann<double> *Cuno::v8Utils::FromNativeModel(
     }
   }
 
-  Log::hostArray<double>(layers[0], model->arch[0]);
-
   model->toDevice(
     layers, biases, weights, gradients, errors 
   );

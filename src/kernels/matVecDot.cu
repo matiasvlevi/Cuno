@@ -24,4 +24,4 @@ void Kernels::matVecDot(
     return;
 }
 
-}
+};
