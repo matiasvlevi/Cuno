@@ -2,11 +2,8 @@
 #include <sstream>
 #include "../cuno.cuh"
 
-
-
 #ifndef LOG_H
 #define LOG_H
-
 namespace Log {
 
   template <class T>
@@ -43,6 +40,6 @@ namespace Log {
 
   template <typename T>
   void hostArray(T *values, int N); 
-};
 
+};
 #endif

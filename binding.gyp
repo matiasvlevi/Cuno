@@ -14,11 +14,13 @@
 
     "./src/logger/methods/deviceArray.cu",
     "./src/logger/methods/deviceMatrix.cu",
-    "./src/logger/methods/hostArray.cu",
-    "./src/logger/methods/hostMatrix.cu",
+    "./src/logger/methods/hostArray.cpp",
+    "./src/logger/methods/hostMatrix.cpp",
 
-    "./src/v8/methods/FromNativeModel.cu",
-    "./src/v8/methods/getSingleCallArgs.cu",
+    "./src/v8/methods/FromNativeModel.cpp",
+    "./src/v8/methods/getSingleCallArgs.cpp",
+
+    "./src/Types/MethodInput/MethodInput.cu",
 
     "./src/Types/DeviceDann/allocate.cu",
     "./src/Types/DeviceDann/toDevice.cu",

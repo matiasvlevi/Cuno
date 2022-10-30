@@ -1,4 +1,4 @@
-#include "../v8utils.cuh"
+#include "../v8utils.hpp"
 
 template <>
 Cuno::MethodInput<double> *Cuno::v8Utils::getSingleCallArgs(

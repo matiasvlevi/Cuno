@@ -1,4 +1,4 @@
-#include "../logger.cuh"
+#include "../logger.hpp"
 
 template <>
 void Log::deviceMatrix<double>(double *values, int R, int C) {

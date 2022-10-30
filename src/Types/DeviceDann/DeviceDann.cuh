@@ -1,4 +1,4 @@
-#include "../cuno.cuh"
+#include "../../cuno.cuh"
 
 #ifndef DEVICE_DANN_H
 #define DEVICE_DANN_H
