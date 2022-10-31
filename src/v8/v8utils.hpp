@@ -3,7 +3,7 @@
 #include "../logger/logger.hpp"
 
 #include "../Types/MethodInput/MethodInput.cuh"
-#include "../Types/DeviceDann/DeviceDann.cuh"
+#include "../Types/GPUDann/GPUDann.cuh"
 
 #ifndef V8_UTILS_H
 #define V8_UTILS_H
@@ -23,7 +23,7 @@ namespace v8Utils {
   using v8::Isolate;
 
   template <class T>
-  Cuno::DeviceDann<T> *FromNativeModel(
+  Cuno::GPUDann<T> *FromNativeModel(
     Local<Context> context,
     Isolate *env,
     const FunctionCallbackInfo<Value>& args
@@ -32,7 +32,8 @@ namespace v8Utils {
   template <class T>
   Cuno::MethodInput<T> *getSingleCallArgs(
     const Local<Context> context,
-    const FunctionCallbackInfo<Value>& args
+    const FunctionCallbackInfo<Value>& args,
+    bool matVec = false
   );
 
   template <class T>
@@ -65,7 +66,7 @@ namespace v8Utils {
   ) {
     Local<Array> array = Array::New(env, length); 
     for (int i = 0; i < length; i++) {
-      array->Set(context, i, v8::Number::New(env, (T)(*(buffer + i))));
+      (void)array->Set(context, i, v8::Number::New(env, (T)(*(buffer + i))));
     }
     return array;
   }

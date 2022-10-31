@@ -3,7 +3,8 @@
 template <>
 Cuno::MethodInput<double> *Cuno::v8Utils::getSingleCallArgs(
   const Local<Context> context,
-  const FunctionCallbackInfo<Value>& args
+  const FunctionCallbackInfo<Value>& args,
+  bool matVec
 ) {
   // Abort if arguments are not arrays
   for (int i = 0; i < 2; i++) if (!args[i]->IsArray()) {
@@ -15,6 +16,7 @@ Cuno::MethodInput<double> *Cuno::v8Utils::getSingleCallArgs(
   int M = args[0].As<Array>()->Length();
   int N = v8Utils::getFromArray<Array>(context, args[0].As<Array>(), 0)->Length();
   int P = v8Utils::getFromArray<Array>(context, args[1].As<Array>(), 0)->Length();
+  if (matVec && P > 1) return 0;
 
   // Allocate device memory
   MethodInput<double> *input = new MethodInput<double>(M, N, P);

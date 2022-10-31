@@ -1,7 +1,7 @@
-#include "./DeviceDann.cuh"
+#include "./GPUDann.cuh"
 
 template <>
-void Cuno::DeviceDann<double>::toDevice(
+void Cuno::GPUDann<double>::toDevice(
   double **layers,
   double **biases,
   double **weights,

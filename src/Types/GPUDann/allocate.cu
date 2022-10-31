@@ -1,8 +1,8 @@
-#include "./DeviceDann.cuh"
+#include "./GPUDann.cuh"
 
 
 template <>
-void Cuno::DeviceDann<double>::allocate() 
+void Cuno::GPUDann<double>::allocate() 
 {
  for (int i = 0; i < this->length; i++) {
 

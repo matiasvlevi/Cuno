@@ -6,7 +6,7 @@
 namespace Cuno { 
 
 template <class T>
-class DeviceDann {
+class GPUDann {
 public:
   // Model
   int length;
@@ -19,7 +19,7 @@ public:
   T **gradients;
   T **errors;
 
-  DeviceDann(int *arch, int length) 
+  GPUDann(int *arch, int length) 
   {
     this->length = length;
     this->arch = (int*)malloc(sizeof(int) * length);
@@ -43,7 +43,7 @@ public:
     T **errors
   ); 
 
-  ~DeviceDann() {
+  ~GPUDann() {
     for (int i = 0; i < this->length; i++) {
       cudaFree(this->layers[i]);
       cudaFree(this->biases[i]);

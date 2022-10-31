@@ -6,7 +6,7 @@ __global__ void Kernels::sigmoid(
   double *a,
   int P
 ) {
-  int row = blockIdx.y * blockDim.y + threadIdx.y; 
+  //int row = blockIdx.y * blockDim.y + threadIdx.y; 
   int col = blockIdx.x * blockDim.x + threadIdx.x;
 
   if (col >= P) {
