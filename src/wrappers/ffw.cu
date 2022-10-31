@@ -10,22 +10,22 @@ void Cuno::Wrappers::ffw(GPUDann<double> *nn, double *input) {
   std::cout << "--- FFW ---\n" ;
   for (int i = 0; i < nn->length-1; i++) {
 
-    Wrappers::layer_wrap(
+    Wrappers::matvec_wrap(
        nn->weights[i], nn->layers[i],
-       nn->layers[i+1], nn->biases[i],
-       nn->arch[i+1], nn->arch[i]
+       nn->layers[i+1],
+       nn->arch[i], nn->arch[i+1]
     );
 
-    std::cout << "Conv: " << i << " Arch:" << nn->arch[i] << std::endl; 
+    std::cout << "Conv: " << i << " Arch:" << nn->arch[i] << "," << nn->arch[i+1] << std::endl; 
     Log::deviceArray<double>(nn->layers[i+1], nn->arch[i+1]);
 
-//    Wrappers::add_wrap<double>(nn->layers[i+1], nn->biases[i], nn->arch[i+1]);
-    //   Log::deviceArray<double>(nn->layers[i+1], nn->arch[i+1]);
+    Wrappers::add_wrap<double>(nn->layers[i+1], nn->biases[i], nn->arch[i+1]);
+    std::cout << "after biases: " << std::endl;
+    Log::deviceArray<double>(nn->layers[i+1], nn->arch[i+1]);
 
     // Wrappers::sigmoid_wrap<double>(nn->layers[i+1], nn->arch[i+1]);
     //   Log::deviceArray<double>(nn->layers[i+1], nn->arch[i+1]);
 
-    Log::deviceArray<double>(nn->layers[i+1], nn->arch[i+1]);
   }
   std::cout << "--- FFW END --- " << std::endl;
   std::cout << "biases" << std::endl;

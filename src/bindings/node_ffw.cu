@@ -14,13 +14,11 @@ void Cuno::Bindings::FeedForward(
   Cuno::GPUDann<double> *nn = 
   Cuno::v8Utils::FromNativeModel<double>(context, env, args); 
 
-
-
   double inputs[nn->arch[0]];
 
-  for (int i = 0; i < nn->arch[0]; i++) {
+  for (int i = 0; i < nn->arch[0]; i++)
     inputs[i] = 0;
-  }
+  
 
   Wrappers::ffw(nn, inputs);
 

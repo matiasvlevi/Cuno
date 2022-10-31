@@ -18,7 +18,7 @@ void Kernels::layerConv(
   if (row >= M || col >= 1) return;
   
   for (int k = 0; k < N; k++)   
-    c[row + col] += a[row * N + k] * b[k + col] + d[row];
+    c[row + col] += a[row * N + k] * b[k + col]; //+ d[row];
   
     
   return;

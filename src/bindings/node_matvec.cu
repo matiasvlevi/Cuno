@@ -22,14 +22,14 @@ void Bindings::MatVecDot(
   BLOCKS.x = blocks;
   BLOCKS.y = blocks;
 
-  double *d = 0;
-  double bias_values[device->N] = {};
+  //double *d = 0;
+  //double bias_values[device->N] = {};
 
-  cudaMalloc(&d, sizeof(double) * device->N);
-  cudaMemcpy(d, bias_values, sizeof(double) * device->N, cudaMemcpyHostToDevice);
+  //cudaMalloc(&d, sizeof(double) * device->N);
+  //cudaMemcpy(d, bias_values, sizeof(double) * device->N, cudaMemcpyHostToDevice);
 
-  Kernels::layerConv<<<BLOCKS, THREADS>>>(
-      device->a, device->b, device->c, d,
+  Kernels::matVecDot<<<BLOCKS, THREADS>>>(
+      device->a, device->b, device->c,
       device->M, device->N
   );
 
