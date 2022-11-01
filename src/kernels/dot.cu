@@ -1,6 +1,17 @@
 #include "./kernels.cuh"
 namespace Cuno {
 
+
+/**
+* Matrix Dot Product: (M * N) dot (N * P) = (M * P)
+*
+* @param[in] a The 'A' matrix
+* @param[in] b The 'B' matrix 
+* @param[in] c The result matrix, The 'C' matrix
+* @param[in] M Rows of 'A' 
+* @param[in] N Rows of 'B' & Cols of 'A'
+* @param[in] P Cols of 'B'
+*/  
 __global__ void Kernels::dot(
   double *a,
   double *b,
