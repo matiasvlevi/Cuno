@@ -4,9 +4,10 @@ template <>
 Cuno::GPUDann<double> *Cuno::v8Utils::FromNativeModel(
   Local<Context> context,
   Isolate *env,
-  const FunctionCallbackInfo<Value>& args
+  const FunctionCallbackInfo<Value>& args,
+  int index 
 ) {
-  Local<Object> native_model = args[0].As<Object>(); 
+  Local<Object> native_model = args[index].As<Object>(); 
 
   // Get model's arch
   Local<Value> key = String::NewFromUtf8Literal(env, "arch").As<Value>();

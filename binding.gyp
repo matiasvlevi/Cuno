@@ -22,10 +22,14 @@
 
     "./src/Types/MethodInput/MethodInput.cu",
 
+
+    "./src/error/errors.cu",
+
     "./src/Types/GPUDann/allocate.cu",
     "./src/Types/GPUDann/toDevice.cu",
 
     "./src/main.cu",
+
 
     "./src/kernels/reset.cu",
 
@@ -40,15 +44,13 @@
 
     "./src/kernels/matVecDot.cu",
     "./src/wrappers/matvec_wrap.cu",
+    "./src/bindings/node_matvec.cu",
 
     "./src/kernels/layerConv.cu",
     "./src/wrappers/layer_wrap.cu",
 
     "./src/wrappers/ffw.cu",
 
-    "./src/bindings/node_map.cu",
-    "./src/bindings/node_dot.cu",
-    "./src/bindings/node_matvec.cu",
     "./src/bindings/node_ffw.cu"
     
  ], 

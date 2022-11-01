@@ -25,7 +25,7 @@ void Cuno::Wrappers::train_wrap(
 
   Wrappers::ffw(nn, inputs);
 
-
+  
   double buffer[1 * nn->arch[nn->length-1]];
   cudaMemcpy(buffer, nn->layers[nn->length-1], nn->arch[nn->length-1] * sizeof(double), cudaMemcpyDeviceToHost);
   v8::Local<v8::Array> output = 

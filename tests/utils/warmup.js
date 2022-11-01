@@ -1,9 +1,8 @@
 function warmup(func) {
-    let N = 10;
+    let N = 128;
     func(
-        new Array(N * N).fill(1),
-        new Array(N * N).fill(1),
-        N, N, N
+      new Array(N).fill(new Array(N).fill(1)),
+      new Array(N).fill(new Array(N).fill(1))
     )
 }
 

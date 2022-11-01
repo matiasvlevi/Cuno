@@ -14,11 +14,13 @@ void Cuno::Bindings::FeedForward(
   Cuno::GPUDann<double> *nn = 
   Cuno::v8Utils::FromNativeModel<double>(context, env, args); 
 
-  double inputs[nn->arch[0]];
+  double inputs[args[1].As<v8::Array>()->Length()];
+  v8Utils::fromArrayToBuf<double>(
+    context,
+    inputs,
+    args[1].As<v8::Array>()
+  );
 
-  for (int i = 0; i < nn->arch[0]; i++)
-    inputs[i] = 0;
-  
 
   Wrappers::ffw(nn, inputs);
 
@@ -30,14 +32,13 @@ void Cuno::Bindings::FeedForward(
       cudaMemcpyDeviceToHost
   );
 
-  // to v8
-  v8::Local<v8::Array> output = 
-    v8Utils::toJaggedArray<double>(context, env, buffer, 1, nn->arch[nn->length-1]); 
+  // to v8 array 
+  v8::Local<v8::Array> output = v8Utils::getFromArray<v8::Array>(
+    context, 
+    v8Utils::toJaggedArray<double>(context, env, buffer, 1, nn->arch[nn->length-1]), 0
+  ); 
 
-  // Wait for user input
-  int x;
-  std::cin >> x;
-
+  delete nn;
   // return v8 value
   args.GetReturnValue().Set(output);
 }

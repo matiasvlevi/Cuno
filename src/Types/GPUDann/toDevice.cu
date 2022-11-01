@@ -1,4 +1,5 @@
 #include "./GPUDann.cuh"
+#include "../../error/error.hpp"
 
 template <>
 void Cuno::GPUDann<double>::toDevice(
@@ -8,12 +9,18 @@ void Cuno::GPUDann<double>::toDevice(
   double **gradients,
   double **errors
 ) {
+  if (!(this->valid)) {
+    return;
+  }
+
   for (int i = 0; i < this->length; i++) {
     cudaMemcpy(
       this->layers[i], (double*)layers[i],
       sizeof(double) * this->arch[i],
       cudaMemcpyHostToDevice
     );
+
+    // SKIP OTHERS 
     if (i >= this->length-1) continue;
 
     cudaMemcpy(

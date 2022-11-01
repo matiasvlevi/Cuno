@@ -1,6 +1,6 @@
 #include <node.h>
 
-#include "../logger/logger.hpp"
+#include "../error/error.hpp"
 
 #include "../Types/MethodInput/MethodInput.cuh"
 #include "../Types/GPUDann/GPUDann.cuh"
@@ -26,7 +26,8 @@ namespace v8Utils {
   Cuno::GPUDann<T> *FromNativeModel(
     Local<Context> context,
     Isolate *env,
-    const FunctionCallbackInfo<Value>& args
+    const FunctionCallbackInfo<Value>& args,
+    int index = 0
   );
 
   template <class T>
@@ -98,6 +99,17 @@ namespace v8Utils {
         v8Utils::FromMaybe<String>(String::NewFromUtf8(env, key)).As<Value>()
     )).As<T>();
   } 
+
+  template <class T>
+  void fromArrayToBuf(
+    Local<Context> context,
+    T *buf,
+    Local<Array> array
+  ) {
+    for (int i = 0; i < array->Length(); i++) {
+      buf[i] = v8Utils::getFromArray<Number>(context, array, i)->Value();
+    }
+  }
 
 };
 
