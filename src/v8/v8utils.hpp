@@ -1,9 +1,9 @@
 #include <node.h>
 
-#include "../logger/logger.hpp"
+#include "../error/error.hpp"
 
 #include "../Types/MethodInput/MethodInput.cuh"
-#include "../Types/DeviceDann/DeviceDann.cuh"
+#include "../Types/GPUDann/GPUDann.cuh"
 
 #ifndef V8_UTILS_H
 #define V8_UTILS_H
@@ -23,16 +23,18 @@ namespace v8Utils {
   using v8::Isolate;
 
   template <class T>
-  Cuno::DeviceDann<T> *FromNativeModel(
+  Cuno::GPUDann<T> *FromNativeModel(
     Local<Context> context,
     Isolate *env,
-    const FunctionCallbackInfo<Value>& args
+    const FunctionCallbackInfo<Value>& args,
+    int index = 0
   );
 
   template <class T>
   Cuno::MethodInput<T> *getSingleCallArgs(
     const Local<Context> context,
-    const FunctionCallbackInfo<Value>& args
+    const FunctionCallbackInfo<Value>& args,
+    bool matVec = false
   );
 
   template <class T>
@@ -65,7 +67,7 @@ namespace v8Utils {
   ) {
     Local<Array> array = Array::New(env, length); 
     for (int i = 0; i < length; i++) {
-      array->Set(context, i, v8::Number::New(env, (T)(*(buffer + i))));
+      (void)array->Set(context, i, v8::Number::New(env, (T)(*(buffer + i))));
     }
     return array;
   }
@@ -97,6 +99,17 @@ namespace v8Utils {
         v8Utils::FromMaybe<String>(String::NewFromUtf8(env, key)).As<Value>()
     )).As<T>();
   } 
+
+  template <class T>
+  void fromArrayToBuf(
+    Local<Context> context,
+    T *buf,
+    Local<Array> array
+  ) {
+    for (int i = 0; i < array->Length(); i++) {
+      buf[i] = v8Utils::getFromArray<Number>(context, array, i)->Value();
+    }
+  }
 
 };
 

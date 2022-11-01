@@ -1,25 +1,25 @@
 #include "./kernels.cuh"
-#if !defined(__CUDA_ARCH__) || __CUDA_ARCH__ >= 600
-#else
-__device__ double atomicAdd(double* a, double b) { return b; }
-#endif
 
 namespace Cuno {
 
 __global__ 
-void Kernels::matVecDot(
+void Kernels::layerConv(
   double *a,
   double *b,
   double *c,
+  double *d,
   int M,
   int N
 ) {
   int row = blockIdx.y * blockDim.y + threadIdx.y; 
   int col = blockIdx.x * blockDim.x + threadIdx.x;
 
-  if (row >= M || col >= N) return;
   
-  atomicAdd(&c[row], a[row * N + col] * b[col]);
+  if (row >= M || col >= 1) return;
+  
+  for (int k = 0; k < N; k++)   
+    c[row + col] += a[row * N + k] * b[k + col]; //+ d[row];
+  
     
   return;
 }

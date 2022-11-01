@@ -4,7 +4,9 @@ A node addon for [Dannjs](https://dannjs.org).
 
 Provides cuda bindings, kernel maps and device memory managment for [Dannjs](https://dannjs.org) computations.
 
-The goal is to speed up `Dann.prototype.backpropagate` by implementing a batch system (Instead of training case by case, we would train a whole dataset batch at once). A kernel map would then compute all model changes throughout the batch. This is to reduce Memcpy's in the device's memory, thus help reduce training times along with the cuda parallelisation.
+The goal is to speed up `Dann.prototype.backpropagate` by implementing a batch system (Instead of training case by case, we would train a whole dataset batch at once). The current alias `Dann.prototype.train` would also take in a different set of arguments, for batch/gpu training  
+
+A Cuda kernel map would compute all model changes throughout the batch. This is to reduce Memcpy's in the device's memory, thus help reduce training times along with the cuda parallelisation.
 
 <br/>
 
@@ -14,11 +16,9 @@ The goal is to speed up `Dann.prototype.backpropagate` by implementing a batch s
 git clone https://github.com/matiasvlevi/Cuno.git
 
 cd Cuno
-npm i
+git checkout dev
 
-git clone https://github.com/matiasvlevi/Dann.git
-cd Dann
-git checkout Cuno
+npm run init
 ```
 
 <br/>

@@ -1,12 +1,13 @@
 #include "../v8utils.hpp"
 
 template <>
-Cuno::DeviceDann<double> *Cuno::v8Utils::FromNativeModel(
+Cuno::GPUDann<double> *Cuno::v8Utils::FromNativeModel(
   Local<Context> context,
   Isolate *env,
-  const FunctionCallbackInfo<Value>& args
+  const FunctionCallbackInfo<Value>& args,
+  int index 
 ) {
-  Local<Object> native_model = args[0].As<Object>(); 
+  Local<Object> native_model = args[index].As<Object>(); 
 
   // Get model's arch
   Local<Value> key = String::NewFromUtf8Literal(env, "arch").As<Value>();
@@ -24,7 +25,7 @@ Cuno::DeviceDann<double> *Cuno::v8Utils::FromNativeModel(
     arch[i] = v8Utils::getFromArray<Number>(context, native_arch, i)->Value();
   }
 
-  DeviceDann<double> *model = new DeviceDann<double>(arch, (uint8_t)native_arch->Length());
+  GPUDann<double> *model = new GPUDann<double>(arch, (uint8_t)native_arch->Length());
 
   double *layers[model->length];
   for (uint8_t i = 0 ; i < model->length; i++) {
@@ -36,16 +37,18 @@ Cuno::DeviceDann<double> *Cuno::v8Utils::FromNativeModel(
 
   double *biases[model->length-1];
   for (uint8_t i = 0 ; i < model->length-1; i++) {
-    Local<Object> matrix = v8Utils::getFromArray<Object>(context, native_weights, i);
+    
+    biases[i] = (double*)malloc(sizeof(double) * model->arch[i+1]);
+    Local<Object> matrix = v8Utils::getFromArray<Object>(context, native_biases, i);
     Local<Array> bmatrix = v8Utils::getFrom<Array>(context, env,
       matrix,
       "matrix"
     );
-    biases[i] = (double*)malloc(sizeof(double) * model->arch[i+1]);
+
+    Local<Array> row;
     for (int j = 0; j < model->arch[i+1]; j++) {
-      biases[i][j] = v8Utils::getFromArray<Number>(context,
-          v8Utils::getFromArray<Array>(context, bmatrix, j).As<Array>(), 0
-      )->Value(); 
+      row = v8Utils::getFromArray<Array>(context, bmatrix, j).As<Array>();
+      biases[i][j] = v8Utils::getFromArray<Number>(context, row, 0)->Value();
     }
   }
 

@@ -7,7 +7,10 @@
     "test":"/usr/bin/node ./Dann/test/manual-tests/node/cuno-example/test.js --max-old-space-size=4096",
     "dot":"/usr/bin/node ./tests/dotProd.js",
     "benchmark":"/usr/bin/node ./tests/benchmark.js",
-    "build": "node-gyp rebuild"
+    "rebuild": "node-gyp rebuild",
+    "build": "node-gyp build",
+    "dannjs": "cd Dann ; npm run build:fix ; cd ..",
+    "init": "git submodule init; git submodule update; cd Dann; git checkout Cuno; cd .. ; npm i"
   },
   "dependencies": {
     "node-gyp"              : "^8.4.1"

@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const { warmup } = require('./utils/warmup.js');
-const Clones = require('./jsclones/dot.js');
+const { Matrix } = require('../Dann/build/dann.js');
 const Cuno = require('../build/Release/cuno');
 
 let data = {};
@@ -9,30 +9,33 @@ let data = {};
 warmup(Cuno.dot);
 
 // Iterate from 2 to 1024 and multiply by 2 every iteration 
-for (let N = 2; N <= (1 << 8);  N = N << 1) {
+for (let N = 2; N <= (1 << 10);  N = N << 1) {
   
   // GPU Device function
   let cuno_startTime = new Date().getTime();
 
   for (let i = 0; i < 1; i++) {
       console.log(Cuno.dot(
-        new Array(N * N).fill(1),
-        new Array(N * N).fill(1),
-        N, N, N
-      ));
+        new Array(N).fill(new Array(N).fill(1)),
+        new Array(N).fill(new Array(N).fill(1))
+      )[0]);
   }
 
   let cuno_time = new Date().getTime() - cuno_startTime;
   
   // JS CPU function
-  let js_startTime = new Date().getTime();
 
+  let a = new Matrix(N, N);
+  a.initiate(1);
+
+  let b = new Matrix(N, N);
+  b.initiate(1);
+
+  let js_startTime = new Date().getTime();
   for (let i = 0; i < 1; i++) {
-      console.log(Clones.dot(
-        new Array(N * N).fill(1),
-        new Array(N * N).fill(1),
-        N, N, N
-      ));
+      console.log(Matrix.mult(
+        a, b
+      ).matrix[0]);
   }
   let js_time = new Date().getTime() - js_startTime;
 
