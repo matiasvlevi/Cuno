@@ -6,6 +6,14 @@
 #define LOG_H
 namespace Log {
 
+  /**
+  * log a header containing meta data
+  *
+  * @param[in] Title The header title
+  * @param[in] ptr   The device or host pointer
+  * @param[in] r     The row dimension
+  * @param[in] c     The col dimension
+  */ 
   template <class T>
   class Header {
     public:
@@ -29,15 +37,41 @@ namespace Log {
       int r_, c_;
   };
 
+  /**
+  * log a T device buffer as a Matrix
+  *
+  * @param[in] values The T device buffer
+  * @param[in] R      The Row dimension
+  * @param[in] C      The Column dimension
+  */ 
   template <typename T>
   void deviceMatrix(T *values, int R, int C);
 
+  /**
+  * log a T device buffer as an Array
+  *
+  * @param[in] values The T device buffer
+  * @param[in] N      The length
+  */ 
   template <typename T>
   void deviceArray(T *values, int N);
 
+  /**
+  * log a T host buffer as a Matrix
+  *
+  * @param[in] values The T host buffer
+  * @param[in] R      The Row dimension
+  * @param[in] C      The Column dimension
+  */
   template <typename T>
   void hostMatrix(T *values, int R, int C);
 
+  /**
+  * log a T host buffer as an Array
+  *
+  * @param[in] values The T host buffer
+  * @param[in] N      The length
+  */ 
   template <typename T>
   void hostArray(T *values, int N); 
 
