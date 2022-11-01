@@ -1,7 +1,7 @@
 #include "./kernels.cuh"
 #include <stdio.h>
 namespace Cuno {
-
+  
 __global__ void Kernels::add(
   double *a,
   double *b,
