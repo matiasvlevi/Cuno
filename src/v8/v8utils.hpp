@@ -22,6 +22,14 @@ namespace v8Utils {
   using v8::String;
   using v8::Isolate;
 
+  /**
+  * Convert argument field to a device allocated Dannjs model
+  *
+  * @param[in] context The v8 context
+  * @param[in] env     The v8 environement
+  * @param[in] args    The API side call arguments
+  * @param[in] index   The argument field number
+  */ 
   template <class T>
   Cuno::GPUDann<T> *FromNativeModel(
     Local<Context> context,
@@ -30,6 +38,14 @@ namespace v8Utils {
     int index = 0
   );
 
+  /**
+  * Get argument fields as device pointers for a single call calculation 
+  * (mostly called from the nodejs API)
+  *
+  * @param[in] context The v8 context
+  * @param[in] args    The v8 arguments
+  * @param[in] matVec  Whether or not 'b' matrix is actually a vector (1 column)
+  */ 
   template <class T>
   Cuno::MethodInput<T> *getSingleCallArgs(
     const Local<Context> context,
@@ -37,6 +53,11 @@ namespace v8Utils {
     bool matVec = false
   );
 
+  /**
+  * Assume the value is defined, cast away MaybeLocal to local
+  *
+  * @param[in] maybeValue Maybe Value to cast await
+  */ 
   template <class T>
   Local<Value> FromMaybe(MaybeLocal<T> maybeValue) {
     Local<Value> ans = maybeValue.FromMaybe(
@@ -45,6 +66,13 @@ namespace v8Utils {
     return ans;
   }
 
+  /**
+  * Get value from v8 local Array as v8 T
+  *
+  * @param[in] context The v8 context
+  * @param[in] array   The v8 local array
+  * @param[in] index   THe v8 value's index
+  */ 
   template <class T>
   Local<T> getFromArray(
     Local<Context> context,
@@ -58,6 +86,14 @@ namespace v8Utils {
     return value;
   }
 
+  /**
+  * Convert T buffer to Array
+  *
+  * @param[in] context    The v8 context
+  * @param[in] env        The v8 environement
+  * @param[in] buffer     T type buffer
+  * @param[in] length     The length of the buffer 
+  */ 
   template <class T>
   Local<Array> toArray(
       Local<Context> context,
@@ -72,6 +108,15 @@ namespace v8Utils {
     return array;
   }
 
+  /**
+  * Convert T buffer to jagged array based on R,C dimensions
+  *
+  * @param[in] context   The v8 context
+  * @param[in] env       The v8 environement
+  * @param[out] buffer   T type buffer 
+  * @param[in] R         Row dimension
+  * @param[in] C         Column dimension
+  */ 
   template <class T>
   Local<Array> toJaggedArray(
       Local<Context> context,
@@ -87,6 +132,14 @@ namespace v8Utils {
     return array;
   }
 
+  /**
+  * Get value from v8 Object
+  *
+  * @param[in] context    The v8 context
+  * @param[in] env        The v8 environement
+  * @param[in] matrix     The Dannjs native matrix
+  * @param[in] key        The object string key
+  */ 
   template <class T>
   Local<T> getFrom(
       Local<Context> context,
@@ -100,6 +153,9 @@ namespace v8Utils {
     )).As<T>();
   } 
 
+  /**
+  * @brief Convert a v8 local array to a T buffer 
+  */ 
   template <class T>
   void fromArrayToBuf(
     Local<Context> context,
