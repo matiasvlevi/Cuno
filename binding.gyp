@@ -22,10 +22,16 @@
 
     "./src/Types/MethodInput/MethodInput.cu",
 
-    "./src/Types/DeviceDann/allocate.cu",
-    "./src/Types/DeviceDann/toDevice.cu",
+
+    "./src/error/errors.cu",
+
+    "./src/Types/GPUDann/allocate.cu",
+    "./src/Types/GPUDann/toDevice.cu",
 
     "./src/main.cu",
+
+
+    "./src/kernels/reset.cu",
 
     "./src/kernels/sigmoid.cu",
     "./src/wrappers/sigmoid_wrap.cu",
@@ -38,8 +44,15 @@
 
     "./src/kernels/matVecDot.cu",
     "./src/wrappers/matvec_wrap.cu",
+    "./src/bindings/node_matvec.cu",
+
+    "./src/kernels/layerConv.cu",
+    "./src/wrappers/layer_wrap.cu",
+
+    "./src/wrappers/ffw.cu",
+
+    "./src/bindings/node_ffw.cu"
     
-    "./src/wrappers/train_wrap.cu"
  ], 
 
  'rules': [{
@@ -57,7 +70,7 @@
          'message': "compile cuda file on linux",
          'process_outputs_as_sources': 1,
          'action': ['nvcc','-Xcompiler','-fpic','-c',
-            '<@(_inputs)','-o','<@(_outputs)'],
+            '<@(_inputs)','-o','<@(_outputs)','-arch=sm_60'],
     }]]}],
 
    'conditions': [

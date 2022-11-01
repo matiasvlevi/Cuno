@@ -1,19 +1,16 @@
-#include "./wrappers.cuh"
+#include "./bindings.cuh"
+
+
 namespace Cuno {
 
-void Wrappers::dot_wrap(
+void Bindings::MatVecDot(
   const v8::FunctionCallbackInfo<v8::Value>& args
 ) {
   v8::Isolate* env = args.GetIsolate();
   v8::Local<v8::Context> context = env->GetCurrentContext();
 
   MethodInput<double> *device =
-    v8Utils::getSingleCallArgs<double>(context, args);
-
-  if (device == 0) {
-    args.GetReturnValue().Set(v8::Number::New(env, -1));
-    return;
-  }
+    v8Utils::getSingleCallArgs<double>(context, args, true);
 
   dim3 THREADS;
   THREADS.x = 32;
@@ -25,22 +22,27 @@ void Wrappers::dot_wrap(
   BLOCKS.x = blocks;
   BLOCKS.y = blocks;
 
-  Kernels::dot<<<BLOCKS, THREADS>>>(
+  //double *d = 0;
+  //double bias_values[device->N] = {};
+
+  //cudaMalloc(&d, sizeof(double) * device->N);
+  //cudaMemcpy(d, bias_values, sizeof(double) * device->N, cudaMemcpyHostToDevice);
+
+  Kernels::matVecDot<<<BLOCKS, THREADS>>>(
       device->a, device->b, device->c,
-      device->M, device->N, device->P
+      device->M, device->N
   );
 
   double buffer[device->M * device->P];
   device->getOutput(buffer);
-  delete device;
 
   v8::Local<v8::Array> output = 
     v8Utils::toJaggedArray<double>(context, env, buffer, device->M, device->P);
 
-  // Log::deviceMatrix<double>(device->a, device->M, device->N);
-  // Log::deviceMatrix<double>(device->b, device->N, device->P);
-  // Log::deviceMatrix<double>(device->c, device->M, device->P);
-
+  Log::deviceMatrix<double>(device->a, device->M, device->N);
+  Log::deviceMatrix<double>(device->b, device->N, device->P);
+  Log::deviceMatrix<double>(device->c, device->M, device->P);
+  
   args.GetReturnValue().Set(output);
   return;
 }

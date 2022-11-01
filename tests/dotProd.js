@@ -8,14 +8,31 @@ const a = [
 ];
 
 const b = [
-  [2, 5, 9],
-  [9, 7, 1],
-  [1, 4, 5],
-  [8, 5, 6]
+  [1],
+  [1],
+  [1],
+  [1]
 ];
 
-let output = Cuno.dot(
+let output = Cuno.matVecDot(
   a, b
+);
+
+console.log(output)
+
+output = Cuno.matVecDot(
+  output, [[3]]
+);
+
+console.log(output)
+output = Cuno.matVecDot(
+  a, output
+);
+
+console.log(output)
+
+output = Cuno.matVecDot(
+  output, [[0]]
 );
 
 console.log(output)
