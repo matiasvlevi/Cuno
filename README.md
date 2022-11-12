@@ -115,7 +115,7 @@ const int ARCH[LENGTH] = {
 };
 
 // Allocate Model
-Cuno::DeviceDann<double> *nn = new DeviceDann(ARCH, LENGTH);
+Cuno::DeviceDann<double> *nn = new Cuno::DeviceDann(ARCH, LENGTH);
 
 // Memory transfer
 nn->toDevice(
