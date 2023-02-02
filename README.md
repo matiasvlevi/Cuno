@@ -105,7 +105,7 @@ console.log(c);
 Allocate & Initialize a neural network
 
 ```cpp
-const LENGTH = 5
+const int LENGTH = 5
 const int ARCH[LENGTH] = { 
   32 * 32 * 3,
   32 * 32,
