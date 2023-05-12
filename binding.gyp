@@ -12,47 +12,8 @@
  "target_name": "cuno",
  "sources": [ 
 
-    "./src/logger/methods/deviceArray.cu",
-    "./src/logger/methods/deviceMatrix.cu",
-    "./src/logger/methods/hostArray.cpp",
-    "./src/logger/methods/hostMatrix.cpp",
-
-    "./src/v8/methods/FromNativeModel.cpp",
-    "./src/v8/methods/getSingleCallArgs.cpp",
-
-    "./src/Types/MethodInput/MethodInput.cu",
-
-
-    "./src/error/errors.cu",
-
-    "./src/Types/GPUDann/allocate.cu",
-    "./src/Types/GPUDann/toDevice.cu",
-
-    "./src/main.cu",
-
-
-    "./src/kernels/reset.cu",
-
-    "./src/kernels/sigmoid.cu",
-    "./src/wrappers/sigmoid_wrap.cu",
-
-    "./src/kernels/add.cu",
-    "./src/wrappers/add_wrap.cu",
-
-    "./src/kernels/dot.cu",
-    "./src/wrappers/dot_wrap.cu",
-
-    "./src/kernels/matVecDot.cu",
-    "./src/wrappers/matvec_wrap.cu",
-    "./src/bindings/node_matvec.cu",
-
-    "./src/kernels/layerConv.cu",
-    "./src/wrappers/layer_wrap.cu",
-
-    "./src/wrappers/ffw.cu",
-
-    "./src/bindings/node_ffw.cu"
-    
+    "./src/v8/conversions.cpp",   
+    "./src/main.cu",   
  ], 
 
  'rules': [{
@@ -69,7 +30,7 @@
        {'rule_name': 'cuda on linux',
          'message': "compile cuda file on linux",
          'process_outputs_as_sources': 1,
-         'action': ['nvcc','-Xcompiler','-fpic','-c',
+         'action': ['nvcc','-Xcompiler','-fpic','-c', '-I/usr/include/node',
             '<@(_inputs)','-o','<@(_outputs)','-arch=sm_60'],
     }]]}],
 

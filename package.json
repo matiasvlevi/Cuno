@@ -1,21 +1,16 @@
 {
   "name": "cuno",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "",
-  "main": "build/Release/cuno",
+  "main": "index.js",
   "scripts": {
-    "test":"/usr/bin/node ./Dann/test/manual-tests/node/cuno-example/test.js --max-old-space-size=4096",
-    "dot":"/usr/bin/node ./tests/dotProd.js",
-    "benchmark":"/usr/bin/node ./tests/benchmark.js",
-    "rebuild": "node-gyp rebuild",
-    "build": "node-gyp build",
-    "dannjs": "cd Dann ; npm run build:fix ; cd ..",
-    "init": "git submodule init; git submodule update; cd Dann; git checkout Cuno; cd .. ; npm i"
+	  "test": "node test/index.js",
+	  "build": "node-gyp build"
   },
-  "dependencies": {
-    "node-gyp"              : "^8.4.1"
-  },
-  "author": "",
+  "keywords": [],
+  "author": "Matias Vazquez-Levi",
   "license": "MIT",
-  "gypfile": true
+  "devDependencies": {
+    "node-gyp": "^9.3.1"
+  }
 }
